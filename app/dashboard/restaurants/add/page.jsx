@@ -3,65 +3,33 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { createRestaurant } from "@/lib/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddRestaurantPage = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [imageFile, seImageFile] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem("access_token");
-
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("location", location);
-
-      if (imageFile) {
-        formData.append("image", imageFile);
-      }
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/create-restaurant/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to create restaurant");
-      }
-
-      setSuccess(true);
-      setLoading(false);
-
+  const { mutate, isPending, error, isSuccess } = useMutation({
+    mutationFn: createRestaurant,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["owner-restaurants"] });
       router.push("/dashboard/restaurants");
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
+    },
+  });
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      seImageFile(e.target.files[0]);
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("location", location);
+    if (imageFile) formData.append("image", imageFile);
+    mutate(formData);
   };
 
   return (
@@ -81,18 +49,17 @@ const AddRestaurantPage = () => {
 
         {error && (
           <div className="bg-red-50 text-red-500 p-4 rounded-md mb-6">
-            {error}
+            {error.message}
           </div>
         )}
-
-        {success && (
+        {isSuccess && (
           <div className="bg-green-50 text-green-500 p-4 rounded-md mb-6">
-            Restaurant created successfully! Redirecting...
+            Restaurant created! Redirecting...
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label htmlFor="name" className="block mb-2 text-gray-700">
               Restaurant Name
             </label>
@@ -100,27 +67,27 @@ const AddRestaurantPage = () => {
               type="text"
               id="name"
               value={name}
+              required
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-              required
             />
           </div>
 
-          <div className="mb-4">
+          <div>
             <label htmlFor="description" className="block mb-2 text-gray-700">
               Description
             </label>
             <textarea
               id="description"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               rows="4"
               required
-            ></textarea>
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+            />
           </div>
 
-          <div className="mb-6">
+          <div>
             <label htmlFor="location" className="block mb-2 text-gray-700">
               Location
             </label>
@@ -128,34 +95,32 @@ const AddRestaurantPage = () => {
               type="text"
               id="location"
               value={location}
+              required
               onChange={(e) => setLocation(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-              required
             />
           </div>
 
-          <div className="mb-6">
+          <div>
             <label htmlFor="image" className="block mb-2 text-gray-700">
               Restaurant Image
             </label>
             <input
               type="file"
               id="image"
-              onChange={handleImageChange}
               accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-2">
             <button
               type="submit"
-              disabled={loading}
-              className={`px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              disabled={isPending}
+              className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-60"
             >
-              {loading ? "Creating..." : "Create Restaurant"}
+              {isPending ? "Creating..." : "Create Restaurant"}
             </button>
           </div>
         </form>
