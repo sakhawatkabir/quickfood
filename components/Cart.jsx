@@ -18,37 +18,57 @@ const Cart = ({ item }) => {
   };
 
   return (
-    <div className="flex items-center justify-between border-b pb-4">
-      <div className="flex items-center space-x-4">
-        {item.image && (
+    <div className="flex items-center gap-4">
+      {/* Image */}
+      <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+        {item.image ? (
           <img
-          src={`${process.env.NEXT_PUBLIC_URL}${item.image}`}
+            src={item.image}
             alt={item.name}
-            className="w-16 h-16 object-cover rounded-md"
+            className="w-full h-full object-cover"
           />
+        ) : (
+          <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-50 to-orange-100">
+            <span className="text-orange-300 text-xs font-medium">
+              {item.name}
+            </span>
+          </div>
         )}
-        <div>
-          <h3 className="font-medium">{item.name}</h3>
-          <p className="text-sm text-gray-500">${item.price}</p>
-        </div>
       </div>
-      <div className="flex items-center space-x-3">
+
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
+        <p className="text-sm text-orange-500 font-medium">${item.price}</p>
+      </div>
+
+      {/* Quantity */}
+      <div className="flex items-center gap-2">
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-          className="p-1 rounded-md hover:bg-gray-100"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
         >
-          <Minus size={16} />
+          <Minus size={14} />
         </button>
-        <span className="w-8 text-center">{item.quantity}</span>
+        <span className="w-8 text-center font-medium text-gray-900">
+          {item.quantity}
+        </span>
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-          className="p-1 rounded-md hover:bg-gray-100"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
         >
-          <Plus size={16} />
+          <Plus size={14} />
         </button>
+      </div>
+
+      {/* Subtotal */}
+      <div className="flex items-center gap-3">
+        <span className="font-semibold text-gray-900 w-16 text-right">
+          ${(item.price * item.quantity).toFixed(2)}
+        </span>
         <button
           onClick={() => handleRemoveItem(item.id)}
-          className="p-1 text-red-500 hover:bg-gray-100 rounded-md ml-2"
+          className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
         >
           <Trash2 size={16} />
         </button>

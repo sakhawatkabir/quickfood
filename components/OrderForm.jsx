@@ -4,6 +4,7 @@ import { useCart } from "@/app/context/CartContext";
 import { createOrder } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { MapPin, ShoppingBag } from "lucide-react";
 import React, { useState } from "react";
 
 const OrderForm = () => {
@@ -39,33 +40,41 @@ const OrderForm = () => {
   };
 
   return (
-    <form className="space-y-3 mt-3" onSubmit={handlePlaceOrder}>
+    <form className="space-y-3" onSubmit={handlePlaceOrder}>
       <label
         htmlFor="delivery-address"
-        className="block text-sm font-medium text-gray-700"
+        className="flex items-center gap-1.5 text-sm font-medium text-gray-700"
       >
+        <MapPin className="w-4 h-4 text-gray-400" />
         Delivery Address
       </label>
       <textarea
         id="delivery-address"
         value={deliveryAddress}
         onChange={(e) => setDeliveryAddress(e.target.value)}
-        className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
+        className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
         placeholder="Enter your delivery address"
         rows={3}
         required
       />
 
-      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+      {error && (
+        <p className="text-red-500 text-sm bg-red-50 px-3 py-2 rounded-lg">
+          {error.message}
+        </p>
+      )}
       {isSuccess && (
-        <p className="text-green-500 text-sm">Order placed! Redirecting...</p>
+        <p className="text-green-600 text-sm bg-green-50 px-3 py-2 rounded-lg">
+          Order placed! Redirecting...
+        </p>
       )}
 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black disabled:opacity-60"
+        className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
       >
+        <ShoppingBag className="w-4 h-4" />
         {isPending ? "Placing order..." : "Place Order"}
       </button>
     </form>
