@@ -1,10 +1,12 @@
 import { useCart } from "@/app/context/CartContext";
+import { ShoppingBag } from "lucide-react";
 import React from "react";
 
 const MenuItem = ({ item }) => {
   const { addItem } = useCart();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.preventDefault();
     addItem({
       id: item.id,
       menu_item_id: item.id,
@@ -17,36 +19,46 @@ const MenuItem = ({ item }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden border border-gray-200  flex">
-      <div className="w-1/3 bg-gray-200">
+    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex">
+      <div className="w-36 sm:w-44 bg-gray-200 flex-shrink-0">
         {item.image ? (
           <img
-            src={`${process.env.NEXT_PUBLIC_URL}${item.image}`}
+            src={item.image}
             alt={item.name}
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="flex items-center justify-center h-full bg-gray-100">
-            <span className="text-gray-400">No image</span>
+          <div className="flex items-center justify-center h-full bg-gradient-to-br from-orange-50 to-orange-100">
+            <span className="text-orange-300 text-sm font-medium">
+              {item.name}
+            </span>
           </div>
         )}
       </div>
 
-      <div className="p-4 w-2/3 flex flex-col justify-between">
-        <div className="flex justify-between items-start">
-          <h3 className="text-lg font-bold">{item.name}</h3>
-          <span className="text-sm font-semibold bg-black text-white rounded-full py-2 px-4">
-            ${item.price}
-          </span>
+      <div className="p-4 flex-1 flex flex-col justify-between min-w-0">
+        <div>
+          <div className="flex justify-between items-start gap-2">
+            <h3 className="font-bold text-gray-900 truncate">{item.name}</h3>
+            <span className="text-sm font-bold text-orange-500 whitespace-nowrap">
+              ${item.price}
+            </span>
+          </div>
+          {item.restaurant?.name && (
+            <p className="text-xs text-gray-400 mt-0.5">
+              {item.restaurant.name}
+            </p>
+          )}
+          <p className="text-gray-500 text-sm mt-1.5 line-clamp-2">
+            {item.description}
+          </p>
         </div>
-        <p className="text-gray-600 text-sm mt-2 mb-2 line-clamp-2">
-          {item.description}
-        </p>
-        <div className="mt-4">
+        <div className="mt-3">
           <button
-            className="bg-black text-white px-4 py-2 rounded text-sm  flex items-center gap-1"
+            className="flex items-center gap-1.5 bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
             onClick={handleAddToCart}
           >
+            <ShoppingBag className="w-3.5 h-3.5" />
             Add to Cart
           </button>
         </div>
