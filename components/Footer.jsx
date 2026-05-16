@@ -8,7 +8,7 @@ const footerLinks = {
     { href: "/menu", label: "Menu" },
   ],
   Legal: [
-    { href: "#", label: "Terms of Service" },
+    { href: "/terms", label: "Terms of Service" },
     { href: "#", label: "Privacy Policy" },
     { href: "#", label: "Refund Policy" },
   ],
@@ -85,7 +85,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} QuickFood. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <Link href="#" className="hover:text-orange-400 transition-colors">
+            <Link href="/terms" className="hover:text-orange-400 transition-colors">
               Terms
             </Link>
             <Link href="#" className="hover:text-orange-400 transition-colors">
