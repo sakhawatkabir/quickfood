@@ -8,7 +8,18 @@ import {
   TruckIcon,
   XCircle,
   RefreshCw,
+  Package,
+  MapPin,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const statusOptions = [
   { value: "all", label: "All Orders" },
@@ -19,20 +30,32 @@ const statusOptions = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
-const statusIcons = {
-  pending: <Clock className="h-4 w-4 text-yellow-500" />,
-  preparing: <RefreshCw className="h-4 w-4 text-blue-500" />,
-  out_for_delivery: <TruckIcon className="h-4 w-4 text-purple-500" />,
-  delivered: <CheckCircle className="h-4 w-4 text-green-500" />,
-  cancelled: <XCircle className="h-4 w-4 text-red-500" />,
-};
-
-const statusColors = {
-  pending: "bg-yellow-100 text-yellow-800",
-  preparing: "bg-blue-100 text-blue-800",
-  out_for_delivery: "bg-purple-100 text-purple-800",
-  delivered: "bg-green-100 text-green-800",
-  cancelled: "bg-red-100 text-red-800",
+const statusConfig = {
+  pending: {
+    icon: Clock,
+    variant: "outline",
+    className: "border-yellow-300 text-yellow-700 bg-yellow-50",
+  },
+  preparing: {
+    icon: RefreshCw,
+    variant: "outline",
+    className: "border-blue-300 text-blue-700 bg-blue-50",
+  },
+  out_for_delivery: {
+    icon: TruckIcon,
+    variant: "outline",
+    className: "border-purple-300 text-purple-700 bg-purple-50",
+  },
+  delivered: {
+    icon: CheckCircle,
+    variant: "outline",
+    className: "border-green-300 text-green-700 bg-green-50",
+  },
+  cancelled: {
+    icon: XCircle,
+    variant: "outline",
+    className: "border-red-300 text-red-700 bg-red-50",
+  },
 };
 
 const OrdersPage = () => {
@@ -60,163 +83,201 @@ const OrdersPage = () => {
       ? orders
       : orders.filter((o) => o.status === statusFilter);
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
-  if (error)
+  if (isLoading) {
     return (
-      <div className="text-red-500 text-center py-10">{error.message}</div>
-    );
-
-  return (
-    <div className="container mx-auto px-4">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-4">Orders</h1>
-        <div className="flex flex-wrap gap-2 mb-6">
-          {statusOptions.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => setStatusFilter(option.value)}
-              className={`px-4 py-2 rounded-md text-sm ${
-                statusFilter === option.value
-                  ? "bg-black text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {option.label}
-            </button>
+      <div className="space-y-4">
+        <div className="h-8 w-40 bg-muted rounded-lg animate-pulse" />
+        <div className="flex gap-2">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="h-9 w-24 bg-muted rounded-lg animate-pulse"
+            />
           ))}
         </div>
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="h-48 bg-muted rounded-xl animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-destructive">{error.message}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight">Orders</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Manage and track customer orders
+        </p>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {statusOptions.map((option) => (
+          <Button
+            key={option.value}
+            variant={statusFilter === option.value ? "default" : "outline"}
+            size="sm"
+            onClick={() => setStatusFilter(option.value)}
+          >
+            {option.label}
+          </Button>
+        ))}
       </div>
 
       {filteredOrders.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
-          <p className="text-gray-500">No orders found</p>
-        </div>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Package className="w-12 h-12 text-muted-foreground/50 mb-3" />
+            <p className="text-muted-foreground">No orders found</p>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="space-y-6">
-          {filteredOrders.map((order) => (
-            <div
-              key={order.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h2 className="text-lg font-semibold">Order #{order.id}</h2>
-                    {order.customer && (
-                      <p className="text-gray-500 text-sm mt-0.5">
-                        Customer: {order.customer.username}
-                      </p>
-                    )}
-                    <p className="text-gray-600 text-sm mt-1">
-                      {order.delivery_address}
-                    </p>
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[order.status] ?? "bg-gray-100 text-gray-800"}`}
-                  >
-                    {statusIcons[order.status]}
-                    <span className="capitalize">
-                      {order.status.replace(/_/g, " ")}
-                    </span>
-                  </span>
-                </div>
+        <div className="space-y-4">
+          {filteredOrders.map((order) => {
+            const status = statusConfig[order.status] || statusConfig.pending;
+            const StatusIcon = status.icon;
 
-                <div className="border-t border-gray-200 pt-4">
-                  <h3 className="font-medium text-gray-900 mb-2">
-                    Order Items
-                  </h3>
-                  <div className="divide-y divide-gray-200">
+            return (
+              <Card key={order.id}>
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                      <CardTitle className="text-lg">
+                        Order #{order.id}
+                      </CardTitle>
+                      {order.customer && (
+                        <CardDescription>
+                          Customer: {order.customer.username}
+                        </CardDescription>
+                      )}
+                    </div>
+                    <Badge variant="outline" className={status.className}>
+                      <StatusIcon className="w-3.5 h-3.5 mr-1" />
+                      {order.status.replace(/_/g, " ")}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Address */}
+                  <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>
+                      {order.delivery_address || "No delivery address"}
+                    </span>
+                  </div>
+
+                  {/* Items */}
+                  <div className="bg-muted/50 rounded-lg p-3 space-y-2">
                     {order.items.map((item, index) => (
                       <div
                         key={index}
-                        className="py-3 flex justify-between items-center"
+                        className="flex justify-between items-center text-sm"
                       >
-                        <div>
-                          <span className="font-medium">{item.name}</span>
-                          <span className="text-gray-500 ml-2">
-                            x{item.quantity}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-gray-900">
-                            ${parseFloat(item.total_price).toFixed(2)}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            ${parseFloat(item.price).toFixed(2)} each
-                          </div>
-                        </div>
+                        <span className="text-foreground">
+                          {item.quantity}x {item.name}
+                        </span>
+                        <span className="font-medium">
+                          ${parseFloat(item.total_price).toFixed(2)}
+                        </span>
                       </div>
                     ))}
                   </div>
-                </div>
 
-                <div className="border-t border-gray-200 pt-4 mt-4 flex justify-between">
-                  <span className="font-semibold">Total</span>
-                  <span className="font-semibold">
-                    ${parseFloat(order.total_cost).toFixed(2)}
-                  </span>
-                </div>
+                  {/* Total */}
+                  <div className="flex justify-between items-center pt-2 border-t">
+                    <span className="font-semibold">Total</span>
+                    <span className="font-bold text-lg">
+                      ${parseFloat(order.total_cost).toFixed(2)}
+                    </span>
+                  </div>
 
-                {order.status !== "delivered" &&
-                  order.status !== "cancelled" && (
-                    <div className="border-t border-gray-200 pt-4 mt-4">
-                      <h3 className="font-medium text-gray-900 mb-2">
-                        Update Status
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {order.status === "pending" && (
-                          <button
+                  {/* Status actions */}
+                  {order.status !== "delivered" &&
+                    order.status !== "cancelled" && (
+                      <div className="pt-2 border-t">
+                        <p className="text-sm font-medium mb-2">
+                          Update Status
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {order.status === "pending" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                              onClick={() =>
+                                changeStatus({
+                                  id: order.id,
+                                  status: "preparing",
+                                })
+                              }
+                            >
+                              <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+                              Mark Preparing
+                            </Button>
+                          )}
+                          {order.status === "preparing" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                              onClick={() =>
+                                changeStatus({
+                                  id: order.id,
+                                  status: "out_for_delivery",
+                                })
+                              }
+                            >
+                              <TruckIcon className="w-3.5 h-3.5 mr-1.5" />
+                              Mark Out for Delivery
+                            </Button>
+                          )}
+                          {order.status === "out_for_delivery" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-green-300 text-green-700 hover:bg-green-50"
+                              onClick={() =>
+                                changeStatus({
+                                  id: order.id,
+                                  status: "delivered",
+                                })
+                              }
+                            >
+                              <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
+                              Mark Delivered
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-red-300 text-red-700 hover:bg-red-50"
                             onClick={() =>
                               changeStatus({
                                 id: order.id,
-                                status: "preparing",
+                                status: "cancelled",
                               })
                             }
-                            className="px-3 py-1.5 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200"
                           >
-                            Mark as Preparing
-                          </button>
-                        )}
-                        {order.status === "preparing" && (
-                          <button
-                            onClick={() =>
-                              changeStatus({
-                                id: order.id,
-                                status: "out_for_delivery",
-                              })
-                            }
-                            className="px-3 py-1.5 bg-purple-100 text-purple-700 text-sm rounded-md hover:bg-purple-200"
-                          >
-                            Mark as Out for Delivery
-                          </button>
-                        )}
-                        {order.status === "out_for_delivery" && (
-                          <button
-                            onClick={() =>
-                              changeStatus({
-                                id: order.id,
-                                status: "delivered",
-                              })
-                            }
-                            className="px-3 py-1.5 bg-green-100 text-green-700 text-sm rounded-md hover:bg-green-200"
-                          >
-                            Mark as Delivered
-                          </button>
-                        )}
-                        <button
-                          onClick={() =>
-                            changeStatus({ id: order.id, status: "cancelled" })
-                          }
-                          className="px-3 py-1.5 bg-red-100 text-red-700 text-sm rounded-md hover:bg-red-200"
-                        >
-                          Cancel Order
-                        </button>
+                            <XCircle className="w-3.5 h-3.5 mr-1.5" />
+                            Cancel
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  )}
-              </div>
-            </div>
-          ))}
+                    )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

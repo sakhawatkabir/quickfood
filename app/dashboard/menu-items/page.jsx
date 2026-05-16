@@ -1,13 +1,40 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Edit, Trash2 } from "lucide-react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  UtensilsCrossed,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { fetchOwnerMenuItems, deleteMenuItem } from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const ITEMS_PER_PAGE = 10;
 
 const MenuPage = () => {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
-  const { data: menuItems = [], isLoading, error } = useQuery({
+  const {
+    data: menuItems = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["owner-menu-items"],
     queryFn: fetchOwnerMenuItems,
   });
@@ -25,82 +52,173 @@ const MenuPage = () => {
     remove(id);
   };
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
-  if (error) return <div className="text-red-500 text-center py-10">{error.message}</div>;
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="h-8 w-40 bg-muted rounded-lg animate-pulse" />
+          <div className="h-10 w-36 bg-muted rounded-lg animate-pulse" />
+        </div>
+        <div className="h-96 bg-muted rounded-xl animate-pulse" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-destructive">{error.message}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Menu Items</h1>
-        <Link
-          href="/dashboard/menu-items/add"
-          className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
-        >
-          <PlusCircle size={18} />
-          <span>Add Menu Item</span>
+    <div>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Menu Items</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage your restaurant menu items
+          </p>
+        </div>
+        <Link href="/dashboard/menu-items/add" className={cn(buttonVariants())}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Menu Item
         </Link>
       </div>
 
       {menuItems.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
-          <p className="text-gray-500">No menu items found</p>
-        </div>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <UtensilsCrossed className="w-12 h-12 text-muted-foreground/50 mb-3" />
+            <p className="text-muted-foreground mb-1">No menu items yet</p>
+            <p className="text-sm text-muted-foreground/70 mb-4">
+              Add your first menu item to get started
+            </p>
+            <Link
+              href="/dashboard/menu-items/add"
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Menu Item
+            </Link>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Restaurant</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {menuItems.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.image ? (
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_URL}${item.image}`}
-                        alt={item.name}
-                        className="w-20 h-14 object-cover rounded-lg"
-                      />
-                    ) : (
-                      <div className="w-20 h-14 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">
-                        No image
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{item.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{item.restaurant?.name ?? "—"}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500 line-clamp-2">{item.description}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">${parseFloat(item.price).toFixed(2)}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex justify-end gap-4">
-                      <Link href={`/dashboard/menu-items/edit/${item.id}`} className="text-blue-600 hover:text-blue-800">
-                        <Edit size={18} />
-                      </Link>
-                      <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800">
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        (() => {
+          const totalPages = Math.ceil(menuItems.length / ITEMS_PER_PAGE);
+          const paginatedItems = menuItems.slice(
+            (page - 1) * ITEMS_PER_PAGE,
+            page * ITEMS_PER_PAGE,
+          );
+          return (
+            <Card>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-20">Image</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Restaurant</TableHead>
+                    <TableHead className="hidden md:table-cell">
+                      Description
+                    </TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-16 h-12 object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div className="w-16 h-12 bg-muted rounded-lg flex items-center justify-center">
+                            <UtensilsCrossed className="w-4 h-4 text-muted-foreground/50" />
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium">{item.name}</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">
+                          {item.restaurant?.name ?? "—"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell max-w-xs">
+                        <span className="text-sm text-muted-foreground line-clamp-1">
+                          {item.description}
+                        </span>
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        ${parseFloat(item.price).toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Link
+                            href={`/dashboard/menu-items/edit/${item.id}`}
+                            className={cn(
+                              buttonVariants({
+                                variant: "ghost",
+                                size: "icon",
+                              }),
+                            )}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Link>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-4 py-3 border-t">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {(page - 1) * ITEMS_PER_PAGE + 1}–
+                    {Math.min(page * ITEMS_PER_PAGE, menuItems.length)} of{" "}
+                    {menuItems.length}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      disabled={page === 1}
+                      onClick={() => setPage((p) => p - 1)}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                      {page} / {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      disabled={page === totalPages}
+                      onClick={() => setPage((p) => p + 1)}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </Card>
+          );
+        })()
       )}
     </div>
   );

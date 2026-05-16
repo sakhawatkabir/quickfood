@@ -2,9 +2,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { createMenuItem } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const AddMenuPage = () => {
   const [name, setName] = useState("");
@@ -34,103 +44,107 @@ const AddMenuPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 max-w-3xl">
-      <div className="mb-6">
-        <Link
-          href="/dashboard/menu-items"
-          className="flex items-center text-gray-600 hover:text-black"
-        >
-          <ArrowLeft size={18} className="mr-2" />
-          Back to Menu
-        </Link>
-      </div>
+    <div className="max-w-2xl">
+      <Link
+        href="/dashboard/menu-items"
+        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "mb-4")}
+      >
+        <ArrowLeft className="h-4 w-4 mr-1.5" />
+        Back
+      </Link>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-6">Add New Menu Item</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Add New Menu Item</CardTitle>
+          <CardDescription>
+            Add a new dish to your restaurant menu
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <div className="bg-destructive/10 text-destructive text-sm px-4 py-3 rounded-lg mb-4">
+              {error.message}
+            </div>
+          )}
+          {isSuccess && (
+            <div className="bg-green-50 text-green-600 text-sm px-4 py-3 rounded-lg mb-4">
+              Menu item created! Redirecting...
+            </div>
+          )}
 
-        {error && (
-          <div className="bg-red-50 text-red-500 p-4 rounded-md mb-6">
-            {error.message}
-          </div>
-        )}
-        {isSuccess && (
-          <div className="bg-green-50 text-green-500 p-4 rounded-md mb-6">
-            Menu item created! Redirecting...
-          </div>
-        )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="name" className="text-sm font-medium">
+                Item Name
+              </label>
+              <Input
+                id="name"
+                value={name}
+                required
+                placeholder="e.g. Margherita Pizza"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block mb-2 text-gray-700">
-              Item Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              required
-              placeholder="e.g. Margherita Pizza"
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="description" className="text-sm font-medium">
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={description}
+                rows={3}
+                required
+                placeholder="e.g. Classic cheese pizza with fresh tomatoes and basil"
+                onChange={(e) => setDescription(e.target.value)}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="description" className="block mb-2 text-gray-700">
-              Description
-            </label>
-            <textarea
-              id="description"
-              value={description}
-              rows="3"
-              required
-              placeholder="e.g. Classic cheese pizza with fresh tomatoes and basil"
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="price" className="text-sm font-medium">
+                Price ($)
+              </label>
+              <Input
+                id="price"
+                type="number"
+                value={price}
+                step="0.01"
+                min="0"
+                required
+                placeholder="e.g. 12.99"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label htmlFor="price" className="block mb-2 text-gray-700">
-              Price ($)
-            </label>
-            <input
-              type="number"
-              id="price"
-              value={price}
-              step="0.01"
-              min="0"
-              required
-              placeholder="e.g. 12.99"
-              onChange={(e) => setPrice(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="image" className="text-sm font-medium">
+                Image
+              </label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+                className="file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-muted file:text-foreground hover:file:bg-muted/80"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="image" className="block mb-2 text-gray-700">
-              Image
-            </label>
-            <input
-              type="file"
-              id="image"
-              accept="image/*"
-              onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
-
-          <div className="flex justify-end pt-2">
-            <button
-              type="submit"
-              disabled={isPending}
-              className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-60"
-            >
-              {isPending ? "Creating..." : "Add Menu Item"}
-            </button>
-          </div>
-        </form>
-      </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <Link
+                href="/dashboard/menu-items"
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
+                Cancel
+              </Link>
+              <Button type="submit" disabled={isPending}>
+                <Plus className="h-4 w-4 mr-1.5" />
+                {isPending ? "Creating..." : "Add Menu Item"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
