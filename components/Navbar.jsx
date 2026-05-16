@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useAuth } from "@/app/context/AuthContext";
 import { useCart } from "@/app/context/CartContext";
+import { fetchMenuItems, fetchRestaurants } from "@/lib/api";
 import {
   ShoppingCart,
   Menu,
@@ -12,6 +13,9 @@ import {
   User,
   LogOut,
   LayoutDashboard,
+  Search,
+  MapPin,
+  UtensilsCrossed,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -19,8 +23,83 @@ const Navbar = () => {
   const { isAuthenticated, setIsAuthenticated, userRole } = useAuth();
   const { cartItems } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [menuItems, setMenuItems] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
+  const mobileSearchInputRef = useRef(null);
 
   const countItem = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch data on mount
+  useEffect(() => {
+    fetchMenuItems()
+      .then(setMenuItems)
+      .catch(() => {});
+    fetchRestaurants()
+      .then(setRestaurants)
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowResults(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredMenuItems = debouncedQuery
+    ? menuItems
+        .filter(
+          (item) =>
+            item.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+            item.description
+              ?.toLowerCase()
+              .includes(debouncedQuery.toLowerCase()),
+        )
+        .slice(0, 4)
+    : [];
+
+  const filteredRestaurants = debouncedQuery
+    ? restaurants
+        .filter(
+          (r) =>
+            r.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+            r.location?.toLowerCase().includes(debouncedQuery.toLowerCase()),
+        )
+        .slice(0, 3)
+    : [];
+
+  const hasResults =
+    filteredMenuItems.length > 0 || filteredRestaurants.length > 0;
+
+  useEffect(() => {
+    if (mobileSearchOpen && mobileSearchInputRef.current) {
+      mobileSearchInputRef.current.focus();
+    }
+  }, [mobileSearchOpen]);
+
+  const handleSearchSelect = (href) => {
+    setSearchQuery("");
+    setShowResults(false);
+    setMobileOpen(false);
+    setMobileSearchOpen(false);
+    router.push(href);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -44,6 +123,97 @@ const Navbar = () => {
           <Link href="/" className="font-bold text-xl text-orange-500">
             QuickFood
           </Link>
+
+          {/* Search bar - desktop */}
+          <div
+            className="hidden md:block flex-1 max-w-md mx-6 relative"
+            ref={searchRef}
+          >
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search dishes or restaurants..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowResults(true);
+              }}
+              onFocus={() => searchQuery && setShowResults(true)}
+              className="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+            />
+            {showResults && debouncedQuery && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+                {filteredRestaurants.length > 0 && (
+                  <div>
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Restaurants
+                    </p>
+                    {filteredRestaurants.map((r) => (
+                      <a
+                        key={r.id}
+                        href={`/restaurants/${r.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSearchSelect(`/restaurants/${r.id}`);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
+                      >
+                        <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {r.name}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {r.location || "No location"}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {filteredMenuItems.length > 0 && (
+                  <div>
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Dishes
+                    </p>
+                    {filteredMenuItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`/restaurants/${item.restaurant_id}/menu-items`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSearchSelect(
+                            `/restaurants/${item.restaurant_id}/menu-items`,
+                          );
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
+                      >
+                        <UtensilsCrossed className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {item.name}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {item.restaurant?.name || "QuickFood"}
+                          </p>
+                        </div>
+                        <span className="text-sm font-bold text-orange-500">
+                          ${item.price}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {!hasResults && (
+                  <div className="px-4 py-6 text-center">
+                    <p className="text-sm text-gray-400">
+                      No results for &quot;{debouncedQuery}&quot;
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-1">
@@ -110,7 +280,13 @@ const Navbar = () => {
           </div>
 
           {/* Mobile actions */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1">
+            <button
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="p-2 text-gray-600 hover:text-orange-500 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <Link
               href="/cart"
               className="relative p-2 text-gray-600 hover:text-orange-500 transition-colors"
@@ -143,6 +319,114 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile search overlay */}
+      {mobileSearchOpen && (
+        <div
+          className="md:hidden bg-white border-t border-gray-100 shadow-lg"
+          ref={searchRef}
+        >
+          <div className="container mx-auto px-4 py-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                ref={mobileSearchInputRef}
+                type="text"
+                placeholder="Search dishes or restaurants..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowResults(true);
+                }}
+                onFocus={() => searchQuery && setShowResults(true)}
+                className="w-full pl-10 pr-10 py-2.5 text-sm bg-gray-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+              />
+              <button
+                onClick={() => {
+                  setMobileSearchOpen(false);
+                  setSearchQuery("");
+                  setShowResults(false);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            {showResults && debouncedQuery && (
+              <div className="mt-2 bg-gray-50 rounded-xl overflow-hidden">
+                {filteredRestaurants.length > 0 && (
+                  <div>
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Restaurants
+                    </p>
+                    {filteredRestaurants.map((r) => (
+                      <a
+                        key={r.id}
+                        href={`/restaurants/${r.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSearchSelect(`/restaurants/${r.id}`);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
+                      >
+                        <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {r.name}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {r.location || "No location"}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {filteredMenuItems.length > 0 && (
+                  <div>
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                      Dishes
+                    </p>
+                    {filteredMenuItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`/restaurants/${item.restaurant_id}/menu-items`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSearchSelect(
+                            `/restaurants/${item.restaurant_id}/menu-items`,
+                          );
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
+                      >
+                        <UtensilsCrossed className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {item.name}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {item.restaurant?.name || "QuickFood"}
+                          </p>
+                        </div>
+                        <span className="text-sm font-bold text-orange-500">
+                          ${item.price}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {!hasResults && (
+                  <div className="px-4 py-6 text-center">
+                    <p className="text-sm text-gray-400">
+                      No results for &quot;{debouncedQuery}&quot;
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Mobile menu */}
       {mobileOpen && (
