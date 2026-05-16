@@ -145,7 +145,7 @@ const OrderHistory = () => {
                 <div className="bg-zinc-50 rounded-lg p-3 mb-3">
                   <ul className="space-y-1.5">
                     {order.items.map((item, index) => (
-                      <li key={index} className="flex justify-between text-sm">
+                      <li key={item.id || `item-${index}`} className="flex justify-between text-sm">
                         <span className="text-zinc-600">
                           {item.quantity}x {item.name}
                         </span>

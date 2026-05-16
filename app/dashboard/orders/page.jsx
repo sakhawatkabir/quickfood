@@ -180,7 +180,7 @@ const OrdersPage = () => {
                   <div className="bg-muted/50 rounded-lg p-3 space-y-2">
                     {order.items.map((item, index) => (
                       <div
-                        key={index}
+                        key={item.id || `item-${index}`}
                         className="flex justify-between items-center text-sm"
                       >
                         <span className="text-foreground">
