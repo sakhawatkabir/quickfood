@@ -38,16 +38,16 @@ const RestaurantsPage = () => {
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse" />
-            <div className="h-4 w-64 bg-gray-100 rounded mt-2 animate-pulse" />
+            <div className="h-8 w-48 bg-zinc-200 rounded-lg animate-pulse" />
+            <div className="h-4 w-64 bg-zinc-100 rounded mt-2 animate-pulse" />
           </div>
-          <div className="h-10 w-40 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="h-10 w-40 bg-zinc-200 rounded-xl animate-pulse" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="bg-gray-100 rounded-xl h-80 animate-pulse"
+              className="bg-zinc-100 rounded-xl h-80 animate-pulse"
             />
           ))}
         </div>
@@ -69,15 +69,15 @@ const RestaurantsPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2 text-orange-500 mb-2">
-            <Store className="w-5 h-5" />
+            <Store className="size-5" />
             <span className="text-sm font-semibold uppercase tracking-wider">
               Your Listings
             </span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl md:text-3xl font-semibold text-zinc-900">
             My Restaurants
           </h1>
-          <p className="text-gray-500 mt-1">Manage your restaurant listings</p>
+          <p className="text-zinc-500 mt-1">Manage your restaurant listings</p>
         </div>
         <Link
           href="/dashboard/restaurants/add"
@@ -92,10 +92,10 @@ const RestaurantsPage = () => {
       </div>
 
       {restaurants.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
-          <Store className="w-14 h-14 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500 text-lg mb-1">No restaurants yet</p>
-          <p className="text-sm text-gray-400 mb-6">
+        <div className="text-center py-20 bg-white rounded-xl border border-zinc-100">
+          <Store className="w-14 h-14 text-zinc-300 mx-auto mb-4" />
+          <p className="text-zinc-500 text-lg mb-1">No restaurants yet</p>
+          <p className="text-sm text-zinc-400 mb-6">
             Create your first restaurant to get started
           </p>
           <Link
@@ -111,7 +111,7 @@ const RestaurantsPage = () => {
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-zinc-500 mb-6">
             {restaurants.length} restaurant{restaurants.length !== 1 && "s"}{" "}
             found
           </p>
@@ -120,9 +120,9 @@ const RestaurantsPage = () => {
               <Link
                 key={restaurant.id}
                 href={`/dashboard/restaurants/edit/${restaurant.id}`}
-                className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
+                className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-zinc-100"
               >
-                <div className="h-52 bg-gray-200 relative overflow-hidden">
+                <div className="h-52 bg-zinc-200 relative overflow-hidden">
                   {restaurant.image ? (
                     <img
                       src={restaurant.image}
@@ -138,7 +138,7 @@ const RestaurantsPage = () => {
                   )}
                   <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 text-sm font-medium shadow-sm">
                     <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                    <span className="text-gray-700">4.8</span>
+                    <span className="text-zinc-700">4.8</span>
                   </div>
                   {/* Action buttons overlay */}
                   <div className="absolute bottom-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -146,18 +146,18 @@ const RestaurantsPage = () => {
                       onClick={(e) => handleDelete(e, restaurant.id)}
                       className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-sm hover:bg-red-50 transition-colors"
                     >
-                      <Trash2 className="w-4 h-4 text-red-500" />
+                      <Trash2 className="size-4 text-red-500" />
                     </button>
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-bold mb-1.5 group-hover:text-orange-500 transition-colors">
+                  <h3 className="text-lg font-semibold mb-1.5 group-hover:text-orange-500 transition-colors">
                     {restaurant.name}
                   </h3>
-                  <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                  <p className="text-zinc-500 text-sm mb-3 line-clamp-2">
                     {restaurant.description || "No description available"}
                   </p>
-                  <div className="flex items-center text-gray-400 text-sm">
+                  <div className="flex items-center text-zinc-400 text-sm">
                     <MapPin className="h-4 w-4 mr-1" />
                     <span>
                       {restaurant.location || "Location not specified"}

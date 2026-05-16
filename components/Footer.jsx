@@ -16,12 +16,12 @@ const footerLinks = {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-400">
+    <footer className="bg-zinc-900 text-zinc-400">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="text-xl font-bold text-white">
+            <Link href="/" className="text-xl font-semibold text-white">
               QuickFood
             </Link>
             <p className="mt-3 text-sm leading-relaxed">
@@ -31,21 +31,21 @@ const Footer = () => {
             <div className="flex gap-3 mt-5">
               <a
                 href="#"
-                className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="size-9 bg-zinc-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
-                <Facebook className="w-4 h-4 text-gray-400 hover:text-white" />
+                <Facebook className="size-4 text-zinc-400 hover:text-white" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="size-9 bg-zinc-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
-                <Instagram className="w-4 h-4 text-gray-400 hover:text-white" />
+                <Instagram className="size-4 text-zinc-400 hover:text-white" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
+                className="size-9 bg-zinc-800 rounded-lg flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
-                <Twitter className="w-4 h-4 text-gray-400 hover:text-white" />
+                <Twitter className="size-4 text-zinc-400 hover:text-white" />
               </a>
             </div>
           </div>
@@ -80,7 +80,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-zinc-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm">
             &copy; {new Date().getFullYear()} QuickFood. All rights reserved.
           </p>

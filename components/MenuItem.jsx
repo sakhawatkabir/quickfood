@@ -19,8 +19,8 @@ const MenuItem = ({ item }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex">
-      <div className="w-28 h-28 sm:w-36 sm:h-36 bg-gray-200 flex-shrink-0">
+    <div className="bg-white rounded-xl overflow-hidden border border-zinc-100 shadow-sm hover:shadow-md transition-all duration-300 flex">
+      <div className="w-28 h-28 sm:w-36 sm:h-36 bg-zinc-200 flex-shrink-0">
         {item.image ? (
           <img
             src={item.image}
@@ -39,17 +39,17 @@ const MenuItem = ({ item }) => {
       <div className="p-4 flex-1 flex flex-col justify-between min-w-0">
         <div>
           <div className="flex justify-between items-start gap-2">
-            <h3 className="font-bold text-gray-900 truncate">{item.name}</h3>
-            <span className="text-sm font-bold text-orange-500 whitespace-nowrap">
+            <h3 className="font-semibold text-zinc-900 truncate">{item.name}</h3>
+            <span className="text-sm font-semibold text-orange-500 whitespace-nowrap">
               ${item.price}
             </span>
           </div>
           {item.restaurant?.name && (
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-zinc-400 mt-0.5">
               {item.restaurant.name}
             </p>
           )}
-          <p className="text-gray-500 text-sm mt-1.5 line-clamp-2">
+          <p className="text-zinc-500 text-sm mt-1.5 line-clamp-2">
             {item.description}
           </p>
         </div>

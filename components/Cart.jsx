@@ -20,7 +20,7 @@ const Cart = ({ item }) => {
   return (
     <div className="flex items-center gap-4">
       {/* Image */}
-      <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+      <div className="size-20 bg-zinc-100 rounded-lg overflow-hidden flex-shrink-0">
         {item.image ? (
           <img
             src={item.image}
@@ -38,7 +38,7 @@ const Cart = ({ item }) => {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
+        <h3 className="font-semibold text-zinc-900 truncate">{item.name}</h3>
         <p className="text-sm text-orange-500 font-medium">${item.price}</p>
       </div>
 
@@ -46,16 +46,16 @@ const Cart = ({ item }) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
+          className="size-8 flex items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
         >
           <Minus size={14} />
         </button>
-        <span className="w-8 text-center font-medium text-gray-900">
+        <span className="w-8 text-center font-medium text-zinc-900">
           {item.quantity}
         </span>
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
+          className="size-8 flex items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:border-orange-300 hover:text-orange-500 transition-colors"
         >
           <Plus size={14} />
         </button>
@@ -63,12 +63,12 @@ const Cart = ({ item }) => {
 
       {/* Subtotal */}
       <div className="flex items-center gap-3">
-        <span className="font-semibold text-gray-900 w-16 text-right">
+        <span className="font-semibold text-zinc-900 w-16 text-right">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
         <button
           onClick={() => handleRemoveItem(item.id)}
-          className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
         >
           <Trash2 size={16} />
         </button>

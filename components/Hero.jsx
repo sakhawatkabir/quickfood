@@ -9,7 +9,7 @@ const stats = [
 
 const Hero = () => {
   return (
-    <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+    <section className="relative bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 text-white overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full blur-3xl" />
@@ -22,7 +22,7 @@ const Hero = () => {
             Delivering happiness to your doorstep
           </span>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight">
             Discover{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400">
               Great Food
@@ -30,7 +30,7 @@ const Hero = () => {
             Nearby
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-zinc-300 mb-10 max-w-2xl mx-auto">
             Order from your favorite local restaurants with fast delivery, fresh
             ingredients, and excellent service — all in one place.
           </p>
@@ -41,7 +41,7 @@ const Hero = () => {
               className="inline-flex items-center justify-center gap-2 bg-orange-500 text-white font-semibold py-3.5 px-8 rounded-lg hover:bg-orange-600 transition-colors"
             >
               Browse Restaurants
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="size-4" />
             </Link>
             <Link
               href="/register"
@@ -55,9 +55,9 @@ const Hero = () => {
           <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <stat.icon className="w-5 h-5 text-orange-400 mx-auto mb-2" />
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-gray-400 mt-1">{stat.label}</p>
+                <stat.icon className="size-5 text-orange-400 mx-auto mb-2" />
+                <p className="text-2xl font-semibold">{stat.value}</p>
+                <p className="text-xs text-zinc-400 mt-1">{stat.label}</p>
               </div>
             ))}
           </div>

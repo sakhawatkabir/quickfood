@@ -22,7 +22,7 @@ const FeaturedRestaurants = () => {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="bg-gray-100 rounded-xl h-80 animate-pulse"
+                className="bg-zinc-100 rounded-xl h-80 animate-pulse"
               />
             ))}
           </div>
@@ -39,15 +39,15 @@ const FeaturedRestaurants = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <div className="flex items-center gap-2 text-orange-500 mb-3">
-              <Utensils className="w-5 h-5" />
+              <Utensils className="size-5" />
               <span className="text-sm font-semibold uppercase tracking-wider">
                 Top Picks
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-semibold text-zinc-900">
               Featured Restaurants
             </h2>
-            <p className="text-gray-500 mt-2 max-w-lg">
+            <p className="text-zinc-500 mt-2 max-w-lg">
               Handpicked favorites loved by our community — fresh food, fast
               delivery, every time.
             </p>
@@ -57,7 +57,7 @@ const FeaturedRestaurants = () => {
             className="inline-flex items-center gap-2 mt-4 md:mt-0 text-orange-500 font-semibold hover:text-orange-600 transition-colors"
           >
             View All
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="size-4" />
           </Link>
         </div>
 

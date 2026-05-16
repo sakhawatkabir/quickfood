@@ -69,7 +69,7 @@ const DashboardPage = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Overview of your restaurant business
         </p>
@@ -83,12 +83,12 @@ const DashboardPage = () => {
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-3xl font-bold">{stat.value}</p>
+                    <p className="text-3xl font-semibold">{stat.value}</p>
                     <p className="text-sm text-muted-foreground">
                       {stat.label}
                     </p>
                   </div>
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <div className="size-12 bg-primary/10 rounded-xl flex items-center justify-center">
                     <stat.icon className="h-6 w-6 text-primary" />
                   </div>
                 </div>
@@ -116,7 +116,7 @@ const DashboardPage = () => {
         <CardContent>
           {pendingOrders.length === 0 ? (
             <div className="text-center py-6">
-              <Clock className="w-10 h-10 text-muted-foreground/50 mx-auto mb-2" />
+              <Clock className="size-10 text-muted-foreground/50 mx-auto mb-2" />
               <p className="text-sm text-muted-foreground">No pending orders</p>
             </div>
           ) : (

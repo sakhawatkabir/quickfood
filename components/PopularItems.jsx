@@ -16,13 +16,13 @@ const PopularItems = () => {
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-zinc-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="bg-gray-100 rounded-xl h-36 animate-pulse"
+                className="bg-zinc-100 rounded-xl h-36 animate-pulse"
               />
             ))}
           </div>
@@ -34,20 +34,20 @@ const PopularItems = () => {
   if (items.length === 0) return null;
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-zinc-50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <div className="flex items-center gap-2 text-orange-500 mb-3">
-              <Flame className="w-5 h-5" />
+              <Flame className="size-5" />
               <span className="text-sm font-semibold uppercase tracking-wider">
                 Trending
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-semibold text-zinc-900">
               Popular Items
             </h2>
-            <p className="text-gray-500 mt-2 max-w-lg">
+            <p className="text-zinc-500 mt-2 max-w-lg">
               Most ordered dishes from our top restaurants — freshly prepared
               and delivered fast.
             </p>
@@ -57,7 +57,7 @@ const PopularItems = () => {
             className="mt-4 md:mt-0 inline-flex items-center gap-1.5 text-orange-500 font-semibold hover:text-orange-600 transition-colors"
           >
             View all
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="size-4" />
           </Link>
         </div>
 

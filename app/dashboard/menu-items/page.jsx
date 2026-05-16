@@ -77,7 +77,7 @@ const MenuPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Menu Items</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Menu Items</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Manage your restaurant menu items
           </p>
@@ -91,7 +91,7 @@ const MenuPage = () => {
       {menuItems.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <UtensilsCrossed className="w-12 h-12 text-muted-foreground/50 mb-3" />
+            <UtensilsCrossed className="size-12 text-muted-foreground/50 mb-3" />
             <p className="text-muted-foreground mb-1">No menu items yet</p>
             <p className="text-sm text-muted-foreground/70 mb-4">
               Add your first menu item to get started
@@ -139,7 +139,7 @@ const MenuPage = () => {
                           />
                         ) : (
                           <div className="w-16 h-12 bg-muted rounded-lg flex items-center justify-center">
-                            <UtensilsCrossed className="w-4 h-4 text-muted-foreground/50" />
+                            <UtensilsCrossed className="size-4 text-muted-foreground/50" />
                           </div>
                         )}
                       </TableCell>

@@ -41,25 +41,25 @@ const LoginPage = () => {
         <div className="text-center mb-8">
           <Link
             href="/"
-            className="text-2xl font-bold text-orange-500 inline-block mb-6"
+            className="text-2xl font-semibold text-orange-500 inline-block mb-6"
           >
             QuickFood
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-semibold text-zinc-900">Welcome back</h1>
+          <p className="text-sm text-zinc-500 mt-1">
             Sign in to your account to continue
           </p>
         </div>
 
         {/* Form card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="username"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
+                className="flex items-center gap-1.5 text-sm font-medium text-zinc-700 mb-1.5"
               >
-                <User className="w-4 h-4 text-gray-400" />
+                <User className="size-4 text-zinc-400" />
                 Username
               </label>
               <input
@@ -67,7 +67,7 @@ const LoginPage = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Enter your username"
                 required
               />
@@ -76,9 +76,9 @@ const LoginPage = () => {
             <div>
               <label
                 htmlFor="password"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
+                className="flex items-center gap-1.5 text-sm font-medium text-zinc-700 mb-1.5"
               >
-                <Lock className="w-4 h-4 text-gray-400" />
+                <Lock className="size-4 text-zinc-400" />
                 Password
               </label>
               <input
@@ -86,7 +86,7 @@ const LoginPage = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Enter your password"
                 required
               />
@@ -103,14 +103,14 @@ const LoginPage = () => {
               disabled={isPending}
               className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="size-4" />
               {isPending ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-zinc-500 mt-6">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"

@@ -116,11 +116,11 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <nav className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-zinc-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="font-bold text-xl text-orange-500">
+          <Link href="/" className="font-semibold text-xl text-orange-500">
             QuickFood
           </Link>
 
@@ -129,7 +129,7 @@ const Navbar = () => {
             className="hidden md:block flex-1 max-w-md mx-6 relative"
             ref={searchRef}
           >
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
             <input
               type="text"
               placeholder="Search dishes or restaurants..."
@@ -139,13 +139,13 @@ const Navbar = () => {
                 setShowResults(true);
               }}
               onFocus={() => searchQuery && setShowResults(true)}
-              className="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2 text-sm bg-zinc-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
             />
             {showResults && debouncedQuery && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-lg border border-zinc-100 overflow-hidden z-50">
                 {filteredRestaurants.length > 0 && (
                   <div>
-                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                       Restaurants
                     </p>
                     {filteredRestaurants.map((r) => (
@@ -158,12 +158,12 @@ const Navbar = () => {
                         }}
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
                       >
-                        <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <MapPin className="size-4 text-orange-500 flex-shrink-0" />
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-gray-800 truncate">
+                          <p className="text-sm font-medium text-zinc-800 truncate">
                             {r.name}
                           </p>
-                          <p className="text-xs text-gray-400 truncate">
+                          <p className="text-xs text-zinc-400 truncate">
                             {r.location || "No location"}
                           </p>
                         </div>
@@ -173,7 +173,7 @@ const Navbar = () => {
                 )}
                 {filteredMenuItems.length > 0 && (
                   <div>
-                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                       Dishes
                     </p>
                     {filteredMenuItems.map((item) => (
@@ -188,16 +188,16 @@ const Navbar = () => {
                         }}
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
                       >
-                        <UtensilsCrossed className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <UtensilsCrossed className="size-4 text-orange-500 flex-shrink-0" />
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-800 truncate">
+                          <p className="text-sm font-medium text-zinc-800 truncate">
                             {item.name}
                           </p>
-                          <p className="text-xs text-gray-400 truncate">
+                          <p className="text-xs text-zinc-400 truncate">
                             {item.restaurant?.name || "QuickFood"}
                           </p>
                         </div>
-                        <span className="text-sm font-bold text-orange-500">
+                        <span className="text-sm font-semibold text-orange-500">
                           ${item.price}
                         </span>
                       </a>
@@ -206,7 +206,7 @@ const Navbar = () => {
                 )}
                 {!hasResults && (
                   <div className="px-4 py-6 text-center">
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-zinc-400">
                       No results for &quot;{debouncedQuery}&quot;
                     </p>
                   </div>
@@ -221,7 +221,7 @@ const Navbar = () => {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-orange-500 rounded-md transition-colors"
+                  className="px-3 py-2 text-sm font-medium text-zinc-600 hover:text-orange-500 rounded-md transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -233,11 +233,11 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/cart"
-              className="relative p-2 text-gray-600 hover:text-orange-500 transition-colors"
+              className="relative p-2 text-zinc-600 hover:text-orange-500 transition-colors"
             >
               <ShoppingCart className="h-5 w-5" />
               {countItem > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-bold rounded-full h-4.5 w-4.5 flex items-center justify-center min-w-[18px] h-[18px]">
+                <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-semibold rounded-full h-4.5 w-4.5 flex items-center justify-center min-w-[18px] h-[18px]">
                   {countItem}
                 </span>
               )}
@@ -248,24 +248,24 @@ const Navbar = () => {
                 {userRole === "restaurant_owner" && (
                   <Link
                     href="/dashboard/restaurants"
-                    className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-orange-500 transition-colors"
+                    className="flex items-center gap-1.5 text-sm text-zinc-600 hover:text-orange-500 transition-colors"
                   >
-                    <LayoutDashboard className="w-4 h-4" />
+                    <LayoutDashboard className="size-4" />
                     Dashboard
                   </Link>
                 )}
                 <Link
                   href="/profile"
-                  className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-orange-500 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-zinc-600 hover:text-orange-500 transition-colors"
                 >
-                  <User className="w-4 h-4" />
+                  <User className="size-4" />
                   Profile
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1.5 text-sm px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                  className="flex items-center gap-1.5 text-sm px-4 py-2 bg-zinc-100 text-zinc-700 rounded-lg hover:bg-zinc-200 transition-colors font-medium"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="size-4" />
                   Logout
                 </button>
               </>
@@ -283,17 +283,17 @@ const Navbar = () => {
           <div className="flex md:hidden items-center gap-1">
             <button
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="p-2 text-gray-600 hover:text-orange-500 transition-colors"
+              className="p-2 text-zinc-600 hover:text-orange-500 transition-colors"
             >
-              <Search className="w-5 h-5" />
+              <Search className="size-5" />
             </button>
             <Link
               href="/cart"
-              className="relative p-2 text-gray-600 hover:text-orange-500 transition-colors"
+              className="relative p-2 text-zinc-600 hover:text-orange-500 transition-colors"
             >
               <ShoppingCart className="h-5 w-5" />
               {countItem > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
                   {countItem}
                 </span>
               )}
@@ -308,12 +308,12 @@ const Navbar = () => {
             )}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 text-gray-600"
+              className="p-2 text-zinc-600"
             >
               {mobileOpen ? (
-                <X className="w-5 h-5" />
+                <X className="size-5" />
               ) : (
-                <Menu className="w-5 h-5" />
+                <Menu className="size-5" />
               )}
             </button>
           </div>
@@ -323,12 +323,12 @@ const Navbar = () => {
       {/* Mobile search overlay */}
       {mobileSearchOpen && (
         <div
-          className="md:hidden bg-white border-t border-gray-100 shadow-lg"
+          className="md:hidden bg-white border-t border-zinc-100 shadow-lg"
           ref={searchRef}
         >
           <div className="container mx-auto px-4 py-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
               <input
                 ref={mobileSearchInputRef}
                 type="text"
@@ -339,7 +339,7 @@ const Navbar = () => {
                   setShowResults(true);
                 }}
                 onFocus={() => searchQuery && setShowResults(true)}
-                className="w-full pl-10 pr-10 py-2.5 text-sm bg-gray-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                className="w-full pl-10 pr-10 py-2.5 text-sm bg-zinc-100 border border-transparent rounded-lg focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 outline-none transition-all"
               />
               <button
                 onClick={() => {
@@ -347,16 +347,16 @@ const Navbar = () => {
                   setSearchQuery("");
                   setShowResults(false);
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
               >
-                <X className="w-4 h-4" />
+                <X className="size-4" />
               </button>
             </div>
             {showResults && debouncedQuery && (
-              <div className="mt-2 bg-gray-50 rounded-xl overflow-hidden">
+              <div className="mt-2 bg-zinc-50 rounded-xl overflow-hidden">
                 {filteredRestaurants.length > 0 && (
                   <div>
-                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                       Restaurants
                     </p>
                     {filteredRestaurants.map((r) => (
@@ -369,12 +369,12 @@ const Navbar = () => {
                         }}
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
                       >
-                        <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <MapPin className="size-4 text-orange-500 flex-shrink-0" />
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-gray-800 truncate">
+                          <p className="text-sm font-medium text-zinc-800 truncate">
                             {r.name}
                           </p>
-                          <p className="text-xs text-gray-400 truncate">
+                          <p className="text-xs text-zinc-400 truncate">
                             {r.location || "No location"}
                           </p>
                         </div>
@@ -384,7 +384,7 @@ const Navbar = () => {
                 )}
                 {filteredMenuItems.length > 0 && (
                   <div>
-                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    <p className="px-4 pt-3 pb-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
                       Dishes
                     </p>
                     {filteredMenuItems.map((item) => (
@@ -399,16 +399,16 @@ const Navbar = () => {
                         }}
                         className="flex items-center gap-3 px-4 py-2.5 hover:bg-orange-50 transition-colors"
                       >
-                        <UtensilsCrossed className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <UtensilsCrossed className="size-4 text-orange-500 flex-shrink-0" />
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-800 truncate">
+                          <p className="text-sm font-medium text-zinc-800 truncate">
                             {item.name}
                           </p>
-                          <p className="text-xs text-gray-400 truncate">
+                          <p className="text-xs text-zinc-400 truncate">
                             {item.restaurant?.name || "QuickFood"}
                           </p>
                         </div>
-                        <span className="text-sm font-bold text-orange-500">
+                        <span className="text-sm font-semibold text-orange-500">
                           ${item.price}
                         </span>
                       </a>
@@ -417,7 +417,7 @@ const Navbar = () => {
                 )}
                 {!hasResults && (
                   <div className="px-4 py-6 text-center">
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-zinc-400">
                       No results for &quot;{debouncedQuery}&quot;
                     </p>
                   </div>
@@ -430,44 +430,44 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="md:hidden bg-white border-t border-zinc-100 shadow-lg">
           <div className="container mx-auto px-4 py-4 space-y-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="block py-2 text-gray-700 hover:text-orange-500 font-medium"
+                className="block py-2 text-zinc-700 hover:text-orange-500 font-medium"
               >
                 {link.label}
               </Link>
             ))}
-            <div className="border-t border-gray-100 pt-3">
+            <div className="border-t border-zinc-100 pt-3">
               {isAuthenticated ? (
                 <>
                   {userRole === "restaurant_owner" && (
                     <Link
                       href="/dashboard/restaurants"
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-2 py-2 text-gray-700 hover:text-orange-500 font-medium"
+                      className="flex items-center gap-2 py-2 text-zinc-700 hover:text-orange-500 font-medium"
                     >
-                      <LayoutDashboard className="w-4 h-4" />
+                      <LayoutDashboard className="size-4" />
                       Dashboard
                     </Link>
                   )}
                   <Link
                     href="/profile"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 py-2 text-gray-700 hover:text-orange-500 font-medium"
+                    className="flex items-center gap-2 py-2 text-zinc-700 hover:text-orange-500 font-medium"
                   >
-                    <User className="w-4 h-4" />
+                    <User className="size-4" />
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-2 py-2 text-red-500 font-medium w-full"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="size-4" />
                     Logout
                   </button>
                 </>

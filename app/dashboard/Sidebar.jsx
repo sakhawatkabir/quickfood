@@ -44,8 +44,8 @@ export default function Sidebar({ onClose }) {
     <div className="w-full h-full flex flex-col bg-card border-r">
       {/* Header */}
       <div className="flex items-center justify-between h-16 px-5 border-b">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <UtensilsCrossed className="w-5 h-5 text-primary" />
+        <Link href="/" className="flex items-center gap-2 font-semibold text-lg">
+          <UtensilsCrossed className="size-5 text-primary" />
           <span>QuickFood</span>
         </Link>
         {onClose && (
@@ -53,7 +53,7 @@ export default function Sidebar({ onClose }) {
             onClick={onClose}
             className="lg:hidden p-1.5 rounded-md hover:bg-muted transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="size-4" />
           </button>
         )}
       </div>

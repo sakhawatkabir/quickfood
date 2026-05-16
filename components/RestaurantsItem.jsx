@@ -6,9 +6,9 @@ const RestaurantsItem = ({ item }) => {
   return (
     <Link
       href={`/restaurants/${item.id}`}
-      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
+      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-zinc-100"
     >
-      <div className="h-52 bg-gray-200 relative overflow-hidden">
+      <div className="h-52 bg-zinc-200 relative overflow-hidden">
         {item.image ? (
           <img
             src={item.image}
@@ -24,17 +24,17 @@ const RestaurantsItem = ({ item }) => {
         )}
         <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 text-sm font-medium shadow-sm">
           <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-          <span className="text-gray-700">4.8</span>
+          <span className="text-zinc-700">4.8</span>
         </div>
       </div>
       <div className="p-5">
-        <h3 className="text-lg font-bold mb-1.5 group-hover:text-orange-500 transition-colors">
+        <h3 className="text-lg font-semibold mb-1.5 group-hover:text-orange-500 transition-colors">
           {item.name}
         </h3>
-        <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+        <p className="text-zinc-500 text-sm mb-3 line-clamp-2">
           {item.description}
         </p>
-        <div className="flex items-center text-gray-400 text-sm">
+        <div className="flex items-center text-zinc-400 text-sm">
           <MapPin className="h-4 w-4 mr-1" />
           <span>{item.location}</span>
         </div>

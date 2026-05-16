@@ -78,28 +78,28 @@ const RegisterPage = () => {
         <div className="text-center mb-8">
           <Link
             href="/"
-            className="text-2xl font-bold text-orange-500 inline-block mb-6"
+            className="text-2xl font-semibold text-orange-500 inline-block mb-6"
           >
             QuickFood
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-semibold text-zinc-900">
             Create an account
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-zinc-500 mt-1">
             Join QuickFood and start ordering
           </p>
         </div>
 
         {/* Form card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
           <form className="space-y-5" onSubmit={handleSubmit}>
             {fields.map((field) => (
               <div key={field.id}>
                 <label
                   htmlFor={field.id}
-                  className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
+                  className="flex items-center gap-1.5 text-sm font-medium text-zinc-700 mb-1.5"
                 >
-                  <field.icon className="w-4 h-4 text-gray-400" />
+                  <field.icon className="size-4 text-zinc-400" />
                   {field.label}
                 </label>
                 <input
@@ -107,7 +107,7 @@ const RegisterPage = () => {
                   type={field.type}
                   value={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder={field.placeholder}
                   required
                 />
@@ -130,14 +130,14 @@ const RegisterPage = () => {
               disabled={isPending}
               className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
             >
-              <UserPlus className="w-4 h-4" />
+              <UserPlus className="size-4" />
               {isPending ? "Creating account..." : "Create Account"}
             </button>
           </form>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-zinc-500 mt-6">
           Already have an account?{" "}
           <Link
             href="/login"

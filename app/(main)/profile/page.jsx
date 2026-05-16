@@ -28,10 +28,10 @@ const ProfilePage = () => {
   if (isLoading) {
     return (
       <div className="bg-white min-h-screen">
-        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-14">
+        <div className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 py-14">
           <div className="container mx-auto px-4 text-center">
-            <div className="w-20 h-20 bg-gray-700 rounded-full mx-auto mb-4 animate-pulse" />
-            <div className="h-6 bg-gray-700 rounded w-40 mx-auto animate-pulse" />
+            <div className="size-20 bg-zinc-700 rounded-full mx-auto mb-4 animate-pulse" />
+            <div className="h-6 bg-zinc-700 rounded w-40 mx-auto animate-pulse" />
           </div>
         </div>
         <div className="container mx-auto px-4 py-10">
@@ -39,7 +39,7 @@ const ProfilePage = () => {
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="h-16 bg-gray-100 rounded-xl animate-pulse"
+                className="h-16 bg-zinc-100 rounded-xl animate-pulse"
               />
             ))}
           </div>
@@ -70,17 +70,17 @@ const ProfilePage = () => {
   return (
     <div className="bg-white min-h-screen">
       {/* Header */}
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-14">
+      <div className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 py-14">
         <div className="container mx-auto px-4 text-center">
-          <div className="w-20 h-20 bg-orange-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <User className="w-10 h-10 text-white" />
+          <div className="size-20 bg-orange-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <User className="size-10 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-semibold text-white">
             {user.first_name
               ? `${user.first_name} ${user.last_name || ""}`
               : user.username}
           </h1>
-          <p className="text-gray-400 mt-1">{user.email}</p>
+          <p className="text-zinc-400 mt-1">{user.email}</p>
           <Link
             href="/profile/update"
             className="inline-flex items-center gap-1.5 mt-4 px-5 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
@@ -95,26 +95,26 @@ const ProfilePage = () => {
       <div className="container mx-auto px-4 py-10">
         <div className="max-w-2xl mx-auto space-y-8">
           {/* Profile info */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="p-5 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-900">
+          <div className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden">
+            <div className="p-5 border-b border-zinc-100">
+              <h2 className="font-semibold text-zinc-900">
                 Profile Information
               </h2>
             </div>
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-zinc-100">
               {fields.map((field) => (
                 <div
                   key={field.label}
                   className="flex items-center gap-4 px-5 py-4"
                 >
-                  <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <field.icon className="w-4 h-4 text-gray-500" />
+                  <div className="size-9 bg-zinc-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <field.icon className="size-4 text-zinc-500" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs text-gray-400 mb-0.5">
+                    <p className="text-xs text-zinc-400 mb-0.5">
                       {field.label}
                     </p>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-zinc-900">
                       {field.value || "Not provided"}
                     </p>
                   </div>

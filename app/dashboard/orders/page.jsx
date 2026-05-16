@@ -114,7 +114,7 @@ const OrdersPage = () => {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Orders</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Orders</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Manage and track customer orders
         </p>
@@ -137,7 +137,7 @@ const OrdersPage = () => {
       {filteredOrders.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Package className="w-12 h-12 text-muted-foreground/50 mb-3" />
+            <Package className="size-12 text-muted-foreground/50 mb-3" />
             <p className="text-muted-foreground">No orders found</p>
           </CardContent>
         </Card>
@@ -170,7 +170,7 @@ const OrdersPage = () => {
                 <CardContent className="space-y-4">
                   {/* Address */}
                   <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <MapPin className="size-4 mt-0.5 flex-shrink-0" />
                     <span>
                       {order.delivery_address || "No delivery address"}
                     </span>
@@ -196,7 +196,7 @@ const OrdersPage = () => {
                   {/* Total */}
                   <div className="flex justify-between items-center pt-2 border-t">
                     <span className="font-semibold">Total</span>
-                    <span className="font-bold text-lg">
+                    <span className="font-semibold text-lg">
                       ${parseFloat(order.total_cost).toFixed(2)}
                     </span>
                   </div>

@@ -20,9 +20,9 @@ const formatCurrency = (amount) => `$${parseFloat(amount).toFixed(2)}`;
 const statusConfig = {
   pending: {
     icon: Clock,
-    bg: "bg-gray-100",
-    text: "text-gray-600",
-    dot: "bg-gray-400",
+    bg: "bg-zinc-100",
+    text: "text-zinc-600",
+    dot: "bg-zinc-400",
   },
   preparing: {
     icon: ChefHat,
@@ -60,15 +60,15 @@ const OrderHistory = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="p-5 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">Order History</h2>
+      <div className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="p-5 border-b border-zinc-100">
+          <h2 className="font-semibold text-zinc-900">Order History</h2>
         </div>
         <div className="p-5 space-y-4">
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="h-32 bg-gray-100 rounded-xl animate-pulse"
+              className="h-32 bg-zinc-100 rounded-xl animate-pulse"
             />
           ))}
         </div>
@@ -78,25 +78,25 @@ const OrderHistory = () => {
 
   if (error) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+      <div className="bg-white rounded-xl border border-zinc-100 shadow-sm p-5">
         <p className="text-red-500 text-center">{error.message}</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="p-5 border-b border-gray-100">
-        <h2 className="font-semibold text-gray-900">
+    <div className="bg-white rounded-xl border border-zinc-100 shadow-sm overflow-hidden">
+      <div className="p-5 border-b border-zinc-100">
+        <h2 className="font-semibold text-zinc-900">
           Order History ({orders.length})
         </h2>
       </div>
 
       {orders.length === 0 ? (
         <div className="p-8 text-center">
-          <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500 mb-1">No orders yet</p>
-          <p className="text-sm text-gray-400 mb-4">
+          <Package className="size-12 text-zinc-300 mx-auto mb-3" />
+          <p className="text-zinc-500 mb-1">No orders yet</p>
+          <p className="text-sm text-zinc-400 mb-4">
             Place your first order to see it here
           </p>
           <Link
@@ -108,7 +108,7 @@ const OrderHistory = () => {
           </Link>
         </div>
       ) : (
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-zinc-100">
           {orders.map((order) => {
             const status = statusConfig[order.status] || statusConfig.pending;
             const StatusIcon = status.icon;
@@ -118,8 +118,8 @@ const OrderHistory = () => {
                 {/* Order header */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400">Order</span>
-                    <span className="text-sm font-semibold text-gray-900">
+                    <span className="text-sm text-zinc-400">Order</span>
+                    <span className="text-sm font-semibold text-zinc-900">
                       #{order.id}
                     </span>
                   </div>
@@ -135,21 +135,21 @@ const OrderHistory = () => {
 
                 {/* Delivery address */}
                 <div className="flex items-start gap-2 mb-3">
-                  <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-gray-500">
+                  <MapPin className="size-4 text-zinc-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-zinc-500">
                     {order.delivery_address || "No delivery address provided"}
                   </p>
                 </div>
 
                 {/* Items */}
-                <div className="bg-gray-50 rounded-lg p-3 mb-3">
+                <div className="bg-zinc-50 rounded-lg p-3 mb-3">
                   <ul className="space-y-1.5">
                     {order.items.map((item, index) => (
                       <li key={index} className="flex justify-between text-sm">
-                        <span className="text-gray-600">
+                        <span className="text-zinc-600">
                           {item.quantity}x {item.name}
                         </span>
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-zinc-900">
                           {formatCurrency(item.price * item.quantity)}
                         </span>
                       </li>
@@ -159,8 +159,8 @@ const OrderHistory = () => {
 
                 {/* Total */}
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Total</span>
-                  <span className="font-bold text-gray-900">
+                  <span className="text-sm text-zinc-500">Total</span>
+                  <span className="font-semibold text-zinc-900">
                     {formatCurrency(order.total_cost)}
                   </span>
                 </div>

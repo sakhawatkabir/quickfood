@@ -26,30 +26,30 @@ const RestaurantPage = () => {
   return (
     <div className="bg-white min-h-screen">
       {/* Header */}
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-14">
+      <div className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 py-14">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 text-orange-400 mb-3">
-            <Utensils className="w-5 h-5" />
+            <Utensils className="size-5" />
             <span className="text-sm font-semibold uppercase tracking-wider">
               Explore
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <h1 className="text-3xl md:text-4xl font-semibold text-white mb-3">
             All Restaurants
           </h1>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">
+          <p className="text-zinc-400 mb-8 max-w-md mx-auto">
             Discover the best restaurants near you
           </p>
 
           {/* Search */}
           <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-zinc-400" />
             <input
               type="text"
               placeholder="Search by name or location..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -62,7 +62,7 @@ const RestaurantPage = () => {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="bg-gray-100 rounded-xl h-80 animate-pulse"
+                className="bg-zinc-100 rounded-xl h-80 animate-pulse"
               />
             ))}
           </div>
@@ -72,7 +72,7 @@ const RestaurantPage = () => {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">
+            <p className="text-zinc-400 text-lg">
               {search
                 ? "No restaurants match your search"
                 : "No restaurants available"}
@@ -80,7 +80,7 @@ const RestaurantPage = () => {
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-zinc-500 mb-6">
               {filtered.length} restaurant{filtered.length !== 1 && "s"} found
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

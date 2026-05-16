@@ -43,16 +43,16 @@ const OrderForm = () => {
     <form className="space-y-3" onSubmit={handlePlaceOrder}>
       <label
         htmlFor="delivery-address"
-        className="flex items-center gap-1.5 text-sm font-medium text-gray-700"
+        className="flex items-center gap-1.5 text-sm font-medium text-zinc-700"
       >
-        <MapPin className="w-4 h-4 text-gray-400" />
+        <MapPin className="size-4 text-zinc-400" />
         Delivery Address
       </label>
       <textarea
         id="delivery-address"
         value={deliveryAddress}
         onChange={(e) => setDeliveryAddress(e.target.value)}
-        className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+        className="w-full px-3 py-2.5 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
         placeholder="Enter your delivery address"
         rows={3}
         required
@@ -74,7 +74,7 @@ const OrderForm = () => {
         disabled={isPending}
         className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
       >
-        <ShoppingBag className="w-4 h-4" />
+        <ShoppingBag className="size-4" />
         {isPending ? "Placing order..." : "Place Order"}
       </button>
     </form>
