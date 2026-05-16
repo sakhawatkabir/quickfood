@@ -5,33 +5,35 @@ import { createContext, useState, useContext, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState({
+    isAuthenticated: false,
+    userRole: null,
+    loading: true,
+  });
 
   const token = Cookies.get("token");
 
   useEffect(() => {
     if (!token) {
-      setIsAuthenticated(false);
-      setUserRole(null);
-      setLoading(false);
+      setAuth({ isAuthenticated: false, userRole: null, loading: false });
       return;
     }
     const role = localStorage.getItem("user_role");
-    setUserRole(role);
-    setIsAuthenticated(true);
-    setLoading(false);
+    setAuth({ isAuthenticated: true, userRole: role, loading: false });
   }, [token]);
 
+  const setIsAuthenticated = (value) => {
+    setAuth((prev) => ({ ...prev, isAuthenticated: value }));
+  };
+
   return (
-    <AuthContext.Provider 
-      value={{ 
-        isAuthenticated, 
-        setIsAuthenticated, 
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: auth.isAuthenticated,
+        setIsAuthenticated,
         token,
-        userRole,
-        loading 
+        userRole: auth.userRole,
+        loading: auth.loading,
       }}
     >
       {children}
