@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 // PATCH /api/admin/menu-items
 export async function PATCH(request) {
   const { payload, errorResponse } = await requireRole(request, "admin");

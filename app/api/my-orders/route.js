@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/my-orders — get the logged-in customer's order history
 export async function GET(request) {
   const { payload, errorResponse } = await requireAuth(request);

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/menu-item/[id]
 export async function GET(request, { params }) {
   const { payload, errorResponse } = await requireRole(
