@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
-import { fetchAdminUsers, deleteUser } from "@/lib/api";
+import { fetchAdminUsers, deleteUser, updateUserRole } from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+
+const ITEMS_PER_PAGE = 10;
 
 const roleColors = {
   admin: "bg-red-50 text-red-700 border-red-200",
@@ -13,9 +15,16 @@ const roleColors = {
   user: "bg-zinc-50 text-zinc-700 border-zinc-200",
 };
 
+const roleOptions = [
+  { value: "user", label: "User" },
+  { value: "restaurant_owner", label: "Restaurant Owner" },
+  { value: "admin", label: "Admin" },
+];
+
 const AdminUsersPage = () => {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
   const {
     data: users = [],
@@ -32,15 +41,35 @@ const AdminUsersPage = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
   });
 
+  const { mutate: changeRole } = useMutation({
+    mutationFn: updateUserRole,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
+  });
+
   const handleDelete = (id, username) => {
     if (!confirm(`Delete user "${username}"?`)) return;
     remove(id);
+  };
+
+  const handleRoleChange = (id, username, newRole) => {
+    if (
+      !confirm(`Change role of "${username}" to ${newRole.replace("_", " ")}?`)
+    )
+      return;
+    changeRole({ id, role: newRole });
   };
 
   const filtered = users.filter(
     (u) =>
       u.username?.toLowerCase().includes(search.toLowerCase()) ||
       u.email?.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE,
   );
 
   if (isLoading) {
@@ -75,7 +104,10 @@ const AdminUsersPage = () => {
             type="text"
             placeholder="Search users..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             className="pl-10 pr-4 py-2 text-sm bg-muted border border-transparent rounded-lg focus:bg-background focus:border-ring focus:ring-2 focus:ring-ring/10 outline-none transition-all w-64"
           />
         </div>
@@ -96,13 +128,16 @@ const AdminUsersPage = () => {
                   <th className="text-left py-3 px-4 font-medium text-muted-foreground">
                     Role
                   </th>
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                    Change Role
+                  </th>
                   <th className="text-right py-3 px-4 font-medium text-muted-foreground">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((user) => (
+                {paginated.map((user) => (
                   <tr
                     key={user.id}
                     className="border-b last:border-0 hover:bg-muted/50 transition-colors"
@@ -126,6 +161,25 @@ const AdminUsersPage = () => {
                         {user.role?.replace("_", " ") || "user"}
                       </Badge>
                     </td>
+                    <td className="py-3 px-4">
+                      <select
+                        value={user.role}
+                        onChange={(e) =>
+                          handleRoleChange(
+                            user.id,
+                            user.username,
+                            e.target.value,
+                          )
+                        }
+                        className="text-xs border rounded-md px-2 py-1 bg-background"
+                      >
+                        {roleOptions.map((r) => (
+                          <option key={r.value} value={r.value}>
+                            {r.label}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
                     <td className="py-3 px-4 text-right">
                       {user.role !== "admin" && (
                         <Button
@@ -139,10 +193,10 @@ const AdminUsersPage = () => {
                     </td>
                   </tr>
                 ))}
-                {filtered.length === 0 && (
+                {paginated.length === 0 && (
                   <tr>
                     <td
-                      colSpan={4}
+                      colSpan={5}
                       className="py-10 text-center text-muted-foreground"
                     >
                       No users found
@@ -152,6 +206,39 @@ const AdminUsersPage = () => {
               </tbody>
             </table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-4 py-3 border-t">
+              <p className="text-sm text-muted-foreground">
+                Showing {(page - 1) * ITEMS_PER_PAGE + 1}–
+                {Math.min(page * ITEMS_PER_PAGE, filtered.length)} of{" "}
+                {filtered.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-8"
+                  disabled={page === 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  <span className="sr-only">Previous</span>←
+                </Button>
+                <span className="text-sm font-medium px-2">
+                  {page} / {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-8"
+                  disabled={page === totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  <span className="sr-only">Next</span>→
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

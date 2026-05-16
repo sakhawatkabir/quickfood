@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
-import { fetchAdminMenuItems, deleteMenuItem } from "@/lib/api";
+import {
+  fetchAdminMenuItems,
+  deleteMenuItem,
+  updateMenuItemAvailability,
+} from "@/lib/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2, UtensilsCrossed, Search } from "lucide-react";
 import Image from "next/image";
@@ -39,9 +43,21 @@ const AdminMenuItemsPage = () => {
     },
   });
 
+  const { mutate: toggleAvailability } = useMutation({
+    mutationFn: updateMenuItemAvailability,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-menu-items"] });
+      queryClient.invalidateQueries({ queryKey: ["menu-items"] });
+    },
+  });
+
   const handleDelete = (id, name) => {
     if (!confirm(`Delete menu item "${name}"?`)) return;
     remove(id);
+  };
+
+  const handleToggle = (id, currentValue) => {
+    toggleAvailability({ id, is_available: !currentValue });
   };
 
   const filtered = menuItems.filter(
@@ -105,6 +121,7 @@ const AdminMenuItemsPage = () => {
                 <TableHead>Item</TableHead>
                 <TableHead>Restaurant</TableHead>
                 <TableHead>Price</TableHead>
+                <TableHead>Available</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -141,6 +158,22 @@ const AdminMenuItemsPage = () => {
                   <TableCell className="font-medium">
                     ${parseFloat(item.price || 0).toFixed(2)}
                   </TableCell>
+                  <TableCell>
+                    <button
+                      onClick={() => handleToggle(item.id, item.is_available)}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                        item.is_available ? "bg-green-500" : "bg-zinc-300"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block size-3.5 rounded-full bg-white transition-transform ${
+                          item.is_available
+                            ? "translate-x-[18px]"
+                            : "translate-x-0.5"
+                        }`}
+                      />
+                    </button>
+                  </TableCell>
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
@@ -155,7 +188,7 @@ const AdminMenuItemsPage = () => {
               {paginated.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={4}
+                    colSpan={5}
                     className="py-10 text-center text-muted-foreground"
                   >
                     No menu items found
