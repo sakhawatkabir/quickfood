@@ -9,7 +9,7 @@ const footerLinks = {
   ],
   Legal: [
     { href: "/terms", label: "Terms of Service" },
-    { href: "#", label: "Privacy Policy" },
+    { href: "/privacy", label: "Privacy Policy" },
     { href: "#", label: "Refund Policy" },
   ],
 };
@@ -88,7 +88,7 @@ const Footer = () => {
             <Link href="/terms" className="hover:text-orange-400 transition-colors">
               Terms
             </Link>
-            <Link href="#" className="hover:text-orange-400 transition-colors">
+            <Link href="/privacy" className="hover:text-orange-400 transition-colors">
               Privacy
             </Link>
             <Link href="#" className="hover:text-orange-400 transition-colors">
