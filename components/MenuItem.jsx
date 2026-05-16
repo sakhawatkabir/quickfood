@@ -20,7 +20,7 @@ const MenuItem = ({ item }) => {
 
   return (
     <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex">
-      <div className="w-36 sm:w-44 bg-gray-200 flex-shrink-0">
+      <div className="w-28 h-28 sm:w-36 sm:h-36 bg-gray-200 flex-shrink-0">
         {item.image ? (
           <img
             src={item.image}
