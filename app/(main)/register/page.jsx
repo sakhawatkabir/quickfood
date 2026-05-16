@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "@/lib/api";
+import { UserPlus, User, Mail, Lock } from "lucide-react";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -19,7 +20,6 @@ const RegisterPage = () => {
     },
   });
 
-
   const fieldErrors = error && !(error instanceof Error) ? error : {};
   const globalError = error instanceof Error ? error.message : null;
 
@@ -28,111 +28,124 @@ const RegisterPage = () => {
     mutate({ username, email, password, password2 });
   };
 
+  const fields = [
+    {
+      id: "username",
+      label: "Username",
+      icon: User,
+      type: "text",
+      value: username,
+      onChange: setUsername,
+      placeholder: "Choose a username",
+      errors: fieldErrors.username,
+    },
+    {
+      id: "email",
+      label: "Email Address",
+      icon: Mail,
+      type: "email",
+      value: email,
+      onChange: setEmail,
+      placeholder: "Enter your email",
+      errors: fieldErrors.email,
+    },
+    {
+      id: "password",
+      label: "Password",
+      icon: Lock,
+      type: "password",
+      value: password,
+      onChange: setPassword,
+      placeholder: "Create a password",
+      errors: null,
+    },
+    {
+      id: "password2",
+      label: "Confirm Password",
+      icon: Lock,
+      type: "password",
+      value: password2,
+      onChange: setPassword2,
+      placeholder: "Confirm your password",
+      errors: fieldErrors.password2,
+    },
+  ];
+
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-white min-h-screen flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-black">Create a new account</h2>
-          <p className="mt-2 text-sm text-gray-500">
-            Already have an account?{" "}
-            <Link href="/login" className="font-medium text-black hover:text-gray-700">
-              Sign in
-            </Link>
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-orange-500 inline-block mb-6"
+          >
+            QuickFood
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Create an account
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Join QuickFood and start ordering
           </p>
         </div>
 
-        <div className="mt-8 bg-white py-8 px-4 shadow-md rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
-              </label>
-              <div className="mt-1">
+        {/* Form card */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {fields.map((field) => (
+              <div key={field.id}>
+                <label
+                  htmlFor={field.id}
+                  className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
+                >
+                  <field.icon className="w-4 h-4 text-gray-400" />
+                  {field.label}
+                </label>
                 <input
-                  id="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Enter your username"
+                  id={field.id}
+                  type={field.type}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder={field.placeholder}
                   required
                 />
-                {fieldErrors.username?.map((err, i) => (
-                  <p key={i} className="text-sm text-red-500">{err}</p>
+                {field.errors?.map((err, i) => (
+                  <p key={i} className="text-xs text-red-500 mt-1">
+                    {err}
+                  </p>
                 ))}
               </div>
-            </div>
+            ))}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Enter your email"
-                  required
-                />
-                {fieldErrors.email?.map((err, i) => (
-                  <p key={i} className="text-sm text-red-500">{err}</p>
-                ))}
+            {globalError && (
+              <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg">
+                {globalError}
               </div>
-            </div>
+            )}
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Create a password"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password2" className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password2"
-                  type="password"
-                  value={password2}
-                  onChange={(e) => setPassword2(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Confirm your password"
-                  required
-                />
-                {fieldErrors.password2?.map((err, i) => (
-                  <p key={i} className="text-sm text-red-500">{err}</p>
-                ))}
-              </div>
-            </div>
-
-            {globalError && <p className="text-sm text-red-500">{globalError}</p>}
-
-            <div>
-              <button
-                type="submit"
-                disabled={isPending}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black disabled:opacity-60"
-              >
-                {isPending ? "Creating..." : "Create Account"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
+            >
+              <UserPlus className="w-4 h-4" />
+              {isPending ? "Creating account..." : "Create Account"}
+            </button>
           </form>
         </div>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-orange-500 hover:text-orange-600"
+          >
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );

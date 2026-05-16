@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/app/context/AuthContext";
 import { loginUser } from "@/lib/api";
+import Link from "next/link";
+import { LogIn, User, Lock } from "lucide-react";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -33,77 +35,90 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-white min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Login to your account
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
-            <a href="/register" className="font-medium text-black">
-              Create an account
-            </a>
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-orange-500 inline-block mb-6"
+          >
+            QuickFood
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Sign in to your account to continue
           </p>
         </div>
 
-        <div className="mt-8 bg-white py-8 px-4 shadow-md rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+        {/* Form card */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
               >
+                <User className="w-4 h-4 text-gray-400" />
                 Username
               </label>
-              <div className="mt-1">
-                <input
-                  id="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Enter your username"
-                  required
-                />
-              </div>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter your username"
+                required
+              />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-1.5"
               >
+                <Lock className="w-4 h-4 text-gray-400" />
                 Password
               </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="outline-none w-full px-3 py-2 border border-gray-300 rounded-md sm:text-sm"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter your password"
+                required
+              />
             </div>
 
             {error && (
-              <div className="text-red-500 text-sm">{error.message}</div>
+              <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg">
+                {error.message}
+              </div>
             )}
 
-            <div>
-              <button
-                type="submit"
-                disabled={isPending}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black disabled:opacity-60"
-              >
-                {isPending ? "Logging in..." : "Log in"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-60"
+            >
+              <LogIn className="w-4 h-4" />
+              {isPending ? "Signing in..." : "Sign In"}
+            </button>
           </form>
         </div>
+
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/register"
+            className="font-medium text-orange-500 hover:text-orange-600"
+          >
+            Create one
+          </Link>
+        </p>
       </div>
     </div>
   );
